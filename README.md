@@ -86,7 +86,7 @@ The project includes tools to generate Grad-CAM attention maps for model interpr
 
 Dataset Format
 Must follow ImageFolder structure:
-
+```
 Task_A/
 ├── train/
 │   ├── female/
@@ -94,7 +94,8 @@ Task_A/
 ├── val/
     ├── female/
     └── male/
-• Total Classes: 2 • Image Size: Resized to 224x224 • Normalization: Standard ImageNet mean and std
+```
+Total Classes: 2 • Image Size: Resized to 224x224 • Normalization: Standard ImageNet mean and std
 ---
 ---
 ### Results:
