@@ -259,7 +259,7 @@ You can:
 
 ## 🤝 Contributors
 
-- 👤 [@royg-collab](https://github.com/royg-collab)
+- 👤 [@royg-collab](https://github.com/royg-collab)(Gargi Roy)
 
 Project submitted as part of **COMYS Hackathon 5**
 
@@ -272,3 +272,8 @@ Feel free to open issues, contribute improvements, or fork this repo and build y
 - Emotion detection
 - Real-time face tracking
 
+MIT License
+
+---
+
+For questions, suggestions, or issues, please contact \[chattg10@gmail.com].
