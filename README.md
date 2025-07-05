@@ -13,9 +13,14 @@ Each module is self-contained and designed for easy training, testing, and deplo
 
 ```
 FaceAnalysisSuite/
-├── Task_A/                         # Gender Classification
-│   ├── train.py                   # CNN model training
-│   └── README.md
+ Task_A
+├── model.py           # MobileNetV3 + SE Attention definition
+├── train.py           # Training script
+├── test.py            # Evaluation script accepting test folder path
+├── utils.py           # Utility functions (Plots, Grad-CAM, etc.)
+├── mobilenetv3_se_face_recognition.pth    # Saved model weights
+├── requirements.txt   # All dependencies
+└── README.md          # This file
 ├── Task_B/                         # Unified Face Recognition
 │   ├── main.py                    # Training clean & distorted models
 │   ├── test.py                    # Inference script using UnifiedFaceAnalyzer
@@ -61,15 +66,87 @@ matplotlib
 ```bash
 cd Task_A
 python train.py \
-  --train_path /path/to/train \
-  --val_path /path/to/val \
-  --epochs 50 \
-  --batch_size 16 \
-  --save_model gender_classifier.pth
+    --train_path /path/to/train \
+    --val_path /path/to/val \
+    --epochs 50 \
+    --batch_size 16 \
+    --save_model mobilenetv3_se_face_recognition.pth
 ```
 
 *(Make sure `train.py` supports argparse.)*
+#### Testing
+```
+python test.py \
+    --model_path mobilenetv3_se_face_recognition.pth \
+    --test_path /path/to/test
+```
+---
+Grad-CAM Visualizations
+The project includes tools to generate Grad-CAM attention maps for model interpretability. A separate util.py script is given to plots and Grad_CAM attention.
 
+Dataset Format
+Must follow ImageFolder structure:
+
+Task_A/
+├── train/
+│   ├── female/
+│   └── male/
+├── val/
+    ├── female/
+    └── male/
+• Total Classes: 2 • Image Size: Resized to 224x224 • Normalization: Standard ImageNet mean and std
+---
+---
+### Results:
+
+Validation Classification Report:
+```
+              precision    recall  f1-score   support
+
+      female       0.89      0.68      0.77        79
+        male       0.93      0.98      0.95       343
+
+    accuracy                           0.92       422
+   macro avg       0.91      0.83      0.86       422
+weighted avg       0.92      0.92      0.92       422
+```
+Accuracy:
+*92% overall accuracy on validation set
+### Confusion Matrix:
+Visualized using seaborn to show true positives, false positives.
+![image](https://github.com/user-attachments/assets/ed220757-5b05-4bad-833f-1c31e7780d53)
+
+### Training vs Validation plot (loss and accuracy):
+Plot curves against Training and Validation output to visualize loss and accuracy.
+![image](https://github.com/user-attachments/assets/74bd2a09-4aa7-466b-b2c7-72a35e43d096)
+
+### Grad-CAM Visualization:
+Grad-CAM heatmaps were used to visualize where the model focuses when predicting gender from a face. Results showed attention around eyes, nose, and jawline.
+
+![image](https://github.com/user-attachments/assets/73337c76-afa6-48ad-926b-41072d20ea96)
+---
+##  Grad-CAM Visualizations
+
+The project includes tools to generate Grad-CAM attention maps for model interpretability.
+A separate util.py script is given to plots and Grad_CAM attention.
+
+
+##  Dataset Format
+
+Must follow ImageFolder structure:
+
+```
+Task_A/
+├── train/
+│   ├── female/
+│   └── male/
+├── val/
+    ├── female/
+    └── male/
+```
+•	Total Classes: 2
+•	Image Size: Resized to 224x224
+•	Normalization: Standard ImageNet mean and std
 ---
 
 ### ✅ Task B - Unified Face Recognition
