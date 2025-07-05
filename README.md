@@ -95,8 +95,9 @@ Task_A/
     ├── female/
     └── male/
 ```
+
 Total Classes: 2 • Image Size: Resized to 224x224 • Normalization: Standard ImageNet mean and std
----
+
 ---
 ### Results:
 
