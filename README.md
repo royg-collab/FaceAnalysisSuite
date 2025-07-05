@@ -272,7 +272,10 @@ Feel free to open issues, contribute improvements, or fork this repo and build y
 - Emotion detection
 - Real-time face tracking
 
+## 📜 License
+
 MIT License
+
 
 ---
 
