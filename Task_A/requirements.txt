@@ -1,0 +1,9 @@
+torch
+torchvision
+scikit-learn
+matplotlib
+opencv-python
+seaborn
+torch-scatter 
+torch-sparse 
+torch-geometric
