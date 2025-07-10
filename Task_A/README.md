@@ -18,10 +18,7 @@ This project aims to build a lightweight and accurate deep learning model for ge
 
 ```
  Face-Gender-Classification
-├── model.py           # MobileNetV3 + SE Attention definition
-├── train.py           # Training script
 ├── test.py            # Evaluation script accepting test folder path
-├── utils.py           # Utility functions (Plots, Grad-CAM, etc.)
 ├── mobilenetv3_se_face_recognition.pth    # Saved model weights
 ├── requirements.txt   # All dependencies
 └── README.md          # This file
@@ -73,46 +70,6 @@ Install dependencies using:
 pip install -r requirements.txt
 ```
 
----
-
- ## Training
- ``` 3.1 Optimizer and Loss
- 
-* Optimizer: Adam
-* Learning Rate: 0.0001
-* Loss Function: CrossEntropyLoss
-```
- ```** 3.2 Metrics Tracked
- 
-* Training Loss and Validation Loss
-* Accuracy
-* Precision, Recall, and F1-score (both macro and weighted)
-```
- ```** 3.3 Training Summary
- 
-* Epochs: 50
-* Batch Size: 16
-```
- ```** 3.4 Resource Usage
- 
-* CPU Memory Used
-* Training Time: ~95.0 minutes (varies by hardware)
-```
-________________________________________
-
-Train on your own dataset:
-
-```bash
-python train.py \
-    --train_path /path/to/train \
-    --val_path /path/to/val \
-    --epochs 50 \
-    --batch_size 16 \
-    --save_model mobilenetv3_se_face_recognition.pth
-```
-
----
-
 ##  Testing:
 
 A separate test.py script is provided that:
@@ -140,26 +97,6 @@ It will output:
 
 The project includes tools to generate Grad-CAM attention maps for model interpretability.
 A separate util.py script is given to plots and Grad_CAM attention.
-
-
-##  Dataset Format
-
-Must follow ImageFolder structure:
-
-```
-Task_A/
-├── train/
-│   ├── female/
-│   └── male/
-├── val/
-    ├── female/
-    └── male/
-```
-•	Total Classes: 2
-•	Image Size: Resized to 224x224
-•	Normalization: Standard ImageNet mean and std
-
----
 
 ##  Submission Checklist
 
