@@ -109,7 +109,7 @@ It will output:
 The project includes tools to generate Grad-CAM attention maps for model interpretability.
 A separate util.py script is given to plots and Grad_CAM attention.
 
-
+---
 ### ✅ Task B - Unified Face Recognition
 
 
