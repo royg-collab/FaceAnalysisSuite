@@ -167,7 +167,6 @@ Based on the classification, it will route the image to the appropriate sub-mode
 
 The correct label will be decoded using the appropriate .json file
 
-```
 ---
 
 ##  Key Learnings
