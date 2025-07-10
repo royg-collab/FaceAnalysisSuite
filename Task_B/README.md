@@ -107,10 +107,15 @@ pip install torch torchvision scikit-learn matplotlib seaborn
 ##  Repository Structure
 ```
 | File                             | Description                              |
-|----------------------------------|------------------------------------------|    |
+|----------------------------------|------------------------------------------|    
 ├── test.py                            # Evaluate predictions on test images  |
 ├── UnifiedFaceAnalyzer.pt            # Saved unified model weights (optional)|
 ├── requirements.txt                                                          |
+├── unified_face_analyzer.py         # Defines the model architecture         |
+├── class_to_idx_clean.json          # Maps class indices for clean face      |
+                                       recognition
+├── class_to_idx_877.json            # Maps class indices for distorted face  |
+                                       recognition
 ├── README.md                         #  setup and architecture               |
 └── test_images/                      # Folder of test images                 |
 ```
@@ -140,11 +145,27 @@ Each file is matched to a label in true_labels inside test.py
 ---
 ## File Usage Guide
 ```
-| File                                     | Purpose                                                            | How to Use                                                                                                    |
-| ---------------------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
-| `test.py`                                | 🧪 Script to evaluate images using the full pipeline               | Run `python test.py` to copy test images and print classification report                                      |
-| `class_to_idx_clean.json`                | 🔠 Class-to-index mapping for clean faces                          | Required by `UnifiedFaceAnalyzer` to decode predictions                                                       |
-| `class_to_idx_877.json`                  | 🔠 Class-to-index mapping for distorted faces                      | Required by `UnifiedFaceAnalyzer` to decode predictions                                                       |
+## 📦 Model Components
+
+The following files are required to run inference with `UnifiedFaceAnalyzer.pt`:
+
+| File                          | Description                                                  |
+|-------------------------------|--------------------------------------------------------------|
+| `UnifiedFaceAnalyzer.pt`      | Pretrained weights of the unified model                     |
+| `unified_face_analyzer.py`    | Defines the model architecture (must be present to load `.pt`) |
+| `class_to_idx_clean.json`     | Maps predicted class indices to clean face labels           |
+| `class_to_idx_877.json`       | Maps predicted class indices to distorted face labels       |
+
+> ⚠️ **Important:** The `.pt` file only contains model weights. To use it, the model architecture must be defined in `unified_face_analyzer.py`. Make sure this file is present in the same directory.
+
+---
+```
+### Notes
+test.py will automatically classify whether the image is clean or distorted
+
+Based on the classification, it will route the image to the appropriate sub-model
+
+The correct label will be decoded using the appropriate .json file
 
 ```
 ---
