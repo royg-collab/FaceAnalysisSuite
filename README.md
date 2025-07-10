@@ -9,99 +9,38 @@ Each module is self-contained and designed for easy training, testing, and deplo
 
 ---
 
-## 📁 Project Structure
+# Task_A: Gender Classification with MobileNetV3-Small + SE Attention
+
+This project aims to build a lightweight and accurate deep learning model for gender classification from facial images using the MobileNetV3-Small architecture enhanced with Squeeze-and-Excitation (SE) attention. The model is trained and evaluated on a dataset organized into gender-based subfolders ("male" and "female").
+
+---
+
+##  Features
+
+* ✅ MobileNetV3-Small backbone (pretrained on ImageNet)
+* ✅ SE Attention module for adaptive feature selection
+* ✅ Grad-CAM visualization support
+* ✅ Confusion matrix + classification report
+* ✅ Lightweight and fast training
+
+---
+
+##  Folder Structure
 
 ```
-FaceAnalysisSuite/
- Task_A
-├── model.py           # MobileNetV3 + SE Attention definition
-├── train.py           # Training script
+ Face-Gender-Classification
 ├── test.py            # Evaluation script accepting test folder path
-├── utils.py           # Utility functions (Plots, Grad-CAM, etc.)
 ├── mobilenetv3_se_face_recognition.pth    # Saved model weights
 ├── requirements.txt   # All dependencies
 └── README.md          # This file
-├── Task_B/                         # Unified Face Recognition
-│   ├── main.py                    # Training clean & distorted models
-│   ├── test.py                    # Inference script using UnifiedFaceAnalyzer
-│   ├── Unified_face_analyzer.py   # 3-model pipeline logic
-│   ├── UnifiedFaceAnalyzer.pt     # Saved unified model
-│   ├── class_to_idx_clean.json    # Class mapping for clean images
-│   ├── class_to_idx_877.json      # Class mapping for distorted images
-│   ├── model1_distortion_classifier.pth   # Clean vs Distorted classifier
-│   ├── clean_mobilenetv3_face_recognition.pth  # Clean face recognizer
-│   ├── mobilenetv3_model_distorted_877.pth     # Distorted face recognizer
-│   └── test_images/               # Example test images
-├── requirements.txt
-└── README.md                      # Project documentation (this file)
 ```
 
 ---
 
-## 📦 Installation
+##  Results
 
-Install dependencies using:
+### Validation Classification Report:
 
-```bash
-pip install -r requirements.txt
-```
-
-### `requirements.txt` includes:
-```
-torch>=1.13.0
-torchvision>=0.14.0
-numpy
-scikit-learn
-Pillow
-matplotlib
-```
-
----
-
-## 🧪 How to Use
-
-### ✅ Task A - Gender Classification
-
-#### 🔧 Training (Example)
-```bash
-cd Task_A
-python train.py \
-    --train_path /path/to/train \
-    --val_path /path/to/val \
-    --epochs 50 \
-    --batch_size 16 \
-    --save_model mobilenetv3_se_face_recognition.pth
-```
-
-*(Make sure `train.py` supports argparse.)*
-#### Testing
-```
-python test.py \
-    --model_path mobilenetv3_se_face_recognition.pth \
-    --test_path /path/to/test
-```
----
-Grad-CAM Visualizations
-The project includes tools to generate Grad-CAM attention maps for model interpretability. A separate util.py script is given to plots and Grad_CAM attention.
-
-Dataset Format
-Must follow ImageFolder structure:
-```
-Task_A/
-├── train/
-│   ├── female/
-│   └── male/
-├── val/
-    ├── female/
-    └── male/
-```
-
-Total Classes: 2 • Image Size: Resized to 224x224 • Normalization: Standard ImageNet mean and std
-
----
-### Results:
-
-Validation Classification Report:
 ```
               precision    recall  f1-score   support
 
@@ -111,9 +50,13 @@ Validation Classification Report:
     accuracy                           0.92       422
    macro avg       0.91      0.83      0.86       422
 weighted avg       0.92      0.92      0.92       422
+
 ```
-Accuracy:
-*92% overall accuracy on validation set
+
+### Accuracy:
+
+*  92% overall accuracy on validation set
+
 ### Confusion Matrix:
 Visualized using seaborn to show true positives, false positives.
 ![image](https://github.com/user-attachments/assets/ed220757-5b05-4bad-833f-1c31e7780d53)
@@ -126,63 +69,66 @@ Plot curves against Training and Validation output to visualize loss and accurac
 Grad-CAM heatmaps were used to visualize where the model focuses when predicting gender from a face. Results showed attention around eyes, nose, and jawline.
 
 ![image](https://github.com/user-attachments/assets/73337c76-afa6-48ad-926b-41072d20ea96)
+
+
 ---
+
+##  Requirements
+
+Install dependencies using:
+
+```bash
+pip install -r requirements.txt
+```
+
+##  Testing:
+
+A separate test.py script is provided that:
+*	Accepts a test dataset path (same folder structure)
+*	Loads the pretrained model
+Evaluate the model on new test data:
+
+```bash
+python test.py \
+    --model_path mobilenetv3_se_face_recognition.pth \
+    --test_path /path/to/test
+```
+
+It will output:
+
+* Accuracy
+* Precision
+* Recall
+* F1-Score
+* Confusion matrix
+
+---
+
 ##  Grad-CAM Visualizations
 
 The project includes tools to generate Grad-CAM attention maps for model interpretability.
 A separate util.py script is given to plots and Grad_CAM attention.
 
 
-##  Dataset Format
-
-Must follow ImageFolder structure:
-
-```
-Task_A/
-├── train/
-│   ├── female/
-│   └── male/
-├── val/
-    ├── female/
-    └── male/
-```
-•	Total Classes: 2
-•	Image Size: Resized to 224x224
-•	Normalization: Standard ImageNet mean and std
----
-
 ### ✅ Task B - Unified Face Recognition
 
-This task supports **clean + distorted face recognition** by:
 
-1. Classifying input as clean/distorted
-2. Passing it to the correct face recognizer
-3. Returning the identity prediction
+# Task_B: Multi-Model Face Recognition Pipeline (Clean + Distorted)
 
----
+## Project Objective
 
-### 🤖 Test on New Images
+This project tackles a **multi-class face recognition** challenge under **real-world conditions**, including **distortions** like blur, low light, and occlusion.
 
-To evaluate the full pipeline:
-
-```bash
-cd Task_B
-python test.py \
-  --model_path UnifiedFaceAnalyzer.pt \
-  --test_path test_images/
-```
-
-#### What happens:
-- Loads the 3-model unified `.pt` pipeline
-- Runs on all images in `/test_images`
-- Outputs:
-  - Predicted identity
-  - Confusion matrix
-  - Classification report
+The goal is to build a **modular AI system** that can:
+- Detect whether an input face image is distorted
+- Route it to the appropriate face recognition model
+- Predict the correct person identity
 
 ---
 
-## 🧠 Unified Model Architecture
+##  Approach Overview
+
+ Designed a **3-model inference pipeline** that mimics human visual processing:
 
 ```
              +----------------------+
@@ -211,11 +157,37 @@ python test.py \
 
 ---
 
-## 🧾 Output Example
+##  Model Summary
 
+| Model ID | Purpose                   | Architecture             | Training Data |
+|----------|---------------------------|---------------------------|---------------|
+| Model 1  | Distortion Classifier      | Custom CNN                | Clean + Distorted |
+| Model 2  | Face Recognition (Clean)   | MobileNetV3 Small + SE    | Clean images only |
+| Model 3  | Face Recognition (Distorted)| MobileNetV3 Small + SE   | Distorted images only |
+
+All models are trained separately and saved, then unified in a prediction pipeline.
+
+---
+
+## UnifiedFaceAnalyzer
+
+A 3-stage deep learning pipeline for face recognition across both clean and distorted face images using MobileNetV3 in PyTorch.
+
+
+*This combines three specialized models:
+- Distortion Classifier – Identifies whether an input face is clean or distorted.
+- Clean Face Recognizer – Recognizes identities from clean face images.
+- Distorted Face Recognizer – Recognizes identities from distorted face images (e.g., foggy, blurry, rainy).
+These models are unified into a single class: UnifiedFaceAnalyzer.
+
+✅ The .pt file (UnifiedFaceAnalyzer.pt) stores the model weights only. To use it, the architecture must be defined in unified_face_analyzer.py.
+
+✅ Commit both .pt and .py files to GitHub for full reproducibility.
+
+##  Evaluation Results
+###  Classification Report + Confusion Matrix
 ```
-🎯 Predicted: 001_frontal
-📊 Classification Report:
+Classification Report:
               precision    recall  f1-score   support
 
  001_frontal       1.00      1.00      1.00         3
@@ -225,58 +197,110 @@ python test.py \
    macro avg       1.00      1.00      1.00         4
 weighted avg       1.00      1.00      1.00         4
 ```
+-  `confusion_matrix.png`
+![image](https://github.com/user-attachments/assets/818bfd73-792e-49b2-99bb-dc5cd59ad9d5)
 
 ---
 
-## 🖼️ Test Samples
+##  Saved Model Pipeline
 
-Place your test images in:
-```
-Task_B/test_images/
-```
-
-Examples:
-- `001_frontal_clear.jpg`
-- `001_frontal_foggy.jpg`
-- `002_frontal_blur.jpg`
-- `001_frontal_rainy.jpg`
+`multi_model_face_recognizer.pt` includes:
+- Model 1: Distortion detector
+- Model 2: Clean recognizer
+- Model 3: Distorted recognizer
+- Auto-routing logic
 
 ---
 
-## 💾 Saving and Using the Model
-
-After training, the unified model is saved as:
+##  Setup Instructions
 
 ```bash
-UnifiedFaceAnalyzer.pt
+pip install torch torchvision scikit-learn matplotlib seaborn
 ```
 
-You can:
-- Reuse this `.pt` in `test.py`
-- Upload it to GitHub, Hugging Face, or production
+##  Repository Structure
+```
+| File                             | Description                              |
+|----------------------------------|------------------------------------------|    
+├── test.py                            # Evaluate predictions on test images  |
+├── UnifiedFaceAnalyzer.pt            # Saved unified model weights (optional)|
+├── requirements.txt                                                          |
+├── unified_face_analyzer.py         # Defines the model architecture         |
+├── class_to_idx_clean.json          # Maps class indices for clean face      |
+                                       recognition
+├── class_to_idx_877.json            # Maps class indices for distorted face  |
+                                       recognition
+├── README.md                         #  setup and architecture               |
+└── test_images/                      # Folder of test images                 |
+```
+---
+## Testing
+
+A separate test.py script is provided that:
+*Accepts a test dataset path (flat folder of images)
+*Loads the pretrained unified model
+*Outputs classification report and confusion matrix
+```
+python test.py \
+    --model_path UnifiedFaceAnalyzer.pt \
+    --test_path /path/to/test_images
+```
+---
+## Test Image Format
+Your test_images/ folder should contain files named like:
+```
+001_frontal_clear.jpg
+001_frontal_foggy.jpg
+002_frontal_blur.jpg
+001_frontal_rainy.jpg
+```
+Each file is matched to a label in true_labels inside test.py
+---
+---
+## File Usage Guide
+```
+## 📦 Model Components
+
+The following files are required to run inference with `UnifiedFaceAnalyzer.pt`:
+
+| File                          | Description                                                  |
+|-------------------------------|--------------------------------------------------------------|
+| `UnifiedFaceAnalyzer.pt`      | Pretrained weights of the unified model                     |
+| `unified_face_analyzer.py`    | Defines the model architecture (must be present to load `.pt`) |
+| `class_to_idx_clean.json`     | Maps predicted class indices to clean face labels           |
+| `class_to_idx_877.json`       | Maps predicted class indices to distorted face labels       |
+
+> ⚠️ **Important:** The `.pt` file only contains model weights. To use it, the model architecture must be defined in `unified_face_analyzer.py`. Make sure this file is present in the same directory.
+
+---
+```
+### Notes
+test.py will automatically classify whether the image is clean or distorted
+
+Based on the classification, it will route the image to the appropriate sub-model
+
+The correct label will be decoded using the appropriate .json file
 
 ---
 
-## 🤝 Contributors
+##  Key Learnings
 
-- 👤 [@royg-collab](https://github.com/royg-collab)(Gargi Roy)
-
-Project submitted as part of **COMYS Hackathon 5**
+- Modular pipelines increase flexibility and robustness
+- Distortion-aware models perform better than a single mixed model
+- MobileNetV3 (small + SE) works well for fast, light face recognition
 
 ---
 
-## 📬 Feedback
+##  Author
+**Gargi Roy** .
 
-Feel free to open issues, contribute improvements, or fork this repo and build your own variants like:
-- Age estimation
-- Emotion detection
-- Real-time face tracking
 
 ## 📜 License
 
 MIT License
 
-
 ---
 
 For questions, suggestions, or issues, please contact \[chattg10@gmail.com].
+---
+
